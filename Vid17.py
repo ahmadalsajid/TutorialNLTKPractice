@@ -35,7 +35,7 @@ documents = [(list(movie_reviews.words(fileid)), category)
              for category in movie_reviews.categories()
              for fileid in movie_reviews.fileids(category)
              ]
-random.shuffle(documents)
+# random.shuffle(documents)
 
 all_words = []
 for w in movie_reviews.words():
@@ -56,8 +56,13 @@ def find_features(document):
 
 featuresets = [(find_features(rev), category) for (rev, category) in documents]
 
+# positive data example
 training_set = featuresets[:1900]
 testing_set = featuresets[1900:]
+
+# negative data example
+training_set = featuresets[:100]
+testing_set = featuresets[100:]
 
 classifier_f = open('naivebayes.pickle', 'rb')
 classifier = pickle.load(classifier_f)
@@ -106,6 +111,7 @@ voted_classifier = VoteClassifier(classifier, MultinomialNB_classifier, Bernoull
                                   NuSVC_classifier)
 
 print("voted_classifier accuracy % : ", nltk.classify.accuracy(voted_classifier, testing_set))
+'''
 print("Classification : ", voted_classifier.classify(testing_set[0][0]), "confidence %:",
       voted_classifier.confidence(testing_set[0][0]))
 print("Classification : ", voted_classifier.classify(testing_set[1][0]), "confidence %:",
@@ -118,3 +124,4 @@ print("Classification : ", voted_classifier.classify(testing_set[4][0]), "confid
       voted_classifier.confidence(testing_set[4][0]))
 print("Classification : ", voted_classifier.classify(testing_set[5][0]), "confidence %:",
       voted_classifier.confidence(testing_set[5][0]))
+'''
